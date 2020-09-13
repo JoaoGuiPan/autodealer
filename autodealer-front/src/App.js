@@ -7,21 +7,14 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
-import AssessmentIcon from '@material-ui/icons/Assessment';
-import HomeIcon from '@material-ui/icons/Home';
+
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 
+import AppSideMenu from './side-menu/SideMenu';
 import AppHome from './home/Home';
 import AppCarManagement from './car-management/CarManagement';
 import AppCarRanking from './car-ranking/CarRanking';
@@ -46,7 +39,8 @@ function App() {
   const classes = useStyles();
 
   const [state, setState] = React.useState({
-    menuOpen: false
+    menuOpen: false,
+    title: 'Car Management Web App'
   });
 
   const toggleDrawer = (menuOpen) => (event) => {
@@ -58,38 +52,14 @@ function App() {
   };
 
   const menuList = () => (
-      <div
-        className={clsx(classes.list)}
-        role="presentation"
-        onClick={toggleDrawer(false)}
-        onKeyDown={toggleDrawer(false)}
-      >
-        <List>
-          <ListItem>
-              <ListItemText primary='Menu' />
-          </ListItem>
-          <Link to="/">
-            <ListItem button key='Home'>
-                <ListItemIcon><HomeIcon /></ListItemIcon>
-                <ListItemText primary='Home' />
-            </ListItem>
-          </Link>
-          <Divider />
-          <Link to="/car-management">
-            <ListItem button key='Car Management'>
-                <ListItemIcon><DirectionsCarIcon /></ListItemIcon>
-                <ListItemText primary='Car Management' />
-            </ListItem>
-          </Link>
-          <Divider />
-          <Link to="/car-suggestions">
-            <ListItem button key='Car Suggestions'>
-                <ListItemIcon><AssessmentIcon /></ListItemIcon>
-                <ListItemText primary='Car Suggestions' />
-            </ListItem>
-          </Link>
-        </List>
-      </div>
+    <div
+      className={clsx(classes.list)}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <AppSideMenu></AppSideMenu>
+    </div>
   );
 
   return (
@@ -101,7 +71,7 @@ function App() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              TITLE
+              {state.title}
             </Typography>
           </Toolbar>
         </AppBar>
