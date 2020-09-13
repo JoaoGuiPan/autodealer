@@ -15,6 +15,16 @@ import ListItemText from '@material-ui/core/ListItemText';
 import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import HomeIcon from '@material-ui/icons/Home';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
+import AppHome from './home/Home';
+import AppCarManagement from './car-management/CarManagement';
+import AppCarRanking from './car-ranking/CarRanking';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,49 +58,68 @@ function App() {
   };
 
   const menuList = () => (
-    <div
-      className={clsx(classes.list)}
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
-        <ListItem>
-            <ListItemText primary='Menu' />
-        </ListItem>
-        <ListItem button key='Home'>
-            <ListItemIcon><HomeIcon /></ListItemIcon>
-            <ListItemText primary='Home' />
-        </ListItem>
-        <Divider />
-        <ListItem button key='Car Management'>
-            <ListItemIcon><DirectionsCarIcon /></ListItemIcon>
-            <ListItemText primary='Car Management' />
-        </ListItem>
-        <Divider />
-        <ListItem button key='Car Suggestions'>
-            <ListItemIcon><AssessmentIcon /></ListItemIcon>
-            <ListItemText primary='Car Suggestions' />
-        </ListItem>
-      </List>
-    </div>
+      <div
+        className={clsx(classes.list)}
+        role="presentation"
+        onClick={toggleDrawer(false)}
+        onKeyDown={toggleDrawer(false)}
+      >
+        <List>
+          <ListItem>
+              <ListItemText primary='Menu' />
+          </ListItem>
+          <Link to="/">
+            <ListItem button key='Home'>
+                <ListItemIcon><HomeIcon /></ListItemIcon>
+                <ListItemText primary='Home' />
+            </ListItem>
+          </Link>
+          <Divider />
+          <Link to="/car-management">
+            <ListItem button key='Car Management'>
+                <ListItemIcon><DirectionsCarIcon /></ListItemIcon>
+                <ListItemText primary='Car Management' />
+            </ListItem>
+          </Link>
+          <Divider />
+          <Link to="/car-suggestions">
+            <ListItem button key='Car Suggestions'>
+                <ListItemIcon><AssessmentIcon /></ListItemIcon>
+                <ListItemText primary='Car Suggestions' />
+            </ListItem>
+          </Link>
+        </List>
+      </div>
   );
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            TITLE
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer anchor='left' open={state.menuOpen} onClose={toggleDrawer(false)}>
-        {menuList()}
-      </Drawer>
+      <Router>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.title}>
+              TITLE
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer anchor='left' open={state.menuOpen} onClose={toggleDrawer(false)}>
+          {menuList()}
+        </Drawer>
+        <Switch>
+          <Route path="/car-management">
+            <AppCarManagement />
+          </Route>
+          <Route path="/car-suggestions">
+            <AppCarRanking />
+          </Route>
+          <Route path="/">
+            <AppHome />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
