@@ -17,9 +17,8 @@ data class CarModel(
         @field:NotBlank
         var name: String? = null,
 
-        @ManyToOne
         @field:NotNull
-        var brand: Brand? = null,
+        var brand: Long? = null,
 
         @field:NotNull
         var version: String? = null,

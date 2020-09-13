@@ -17,10 +17,10 @@ interface CarModelRepository: PagingAndSortingRepository<CarModel, Long> {
             " select c from CarModel c " +
             " where (:minYear is null or c.year >= :minYear) " +
             " and (:maxYear is null or c.year <= :maxYear) " +
-            " and (:brand is null or c.brand.id = :brand) "
+            " and (coalesce(:brand) is null or c.brand in (:brand)) "
     )
     fun searchModels(@Param("minYear") minYear: Int?, @Param("maxYear") maxYear: Int?,
-                     @Param("brand") brand: Long?, pageable: Pageable): Page<CarModel>
+                     @Param("brand") brand: List<Long>?, pageable: Pageable): Page<CarModel>
 }
 
 @Repository
