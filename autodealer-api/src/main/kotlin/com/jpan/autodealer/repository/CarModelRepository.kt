@@ -15,11 +15,12 @@ import org.springframework.stereotype.Repository
 interface CarModelRepository: PagingAndSortingRepository<CarModel, Long> {
     @Query(
             " select c from CarModel c " +
-            " where (:name is null or c.name = :name) " +
+            " where (:minYear is null or c.year >= :minYear) " +
+            " and (:maxYear is null or c.year <= :maxYear) " +
             " and (:brand is null or c.brand.id = :brand) "
     )
-    fun searchModels(@Param("name") name: String?, @Param("brand") brand: Long?,
-                     pageable: Pageable): Page<CarModel>
+    fun searchModels(@Param("minYear") minYear: Int?, @Param("maxYear") maxYear: Int?,
+                     @Param("brand") brand: Long?, pageable: Pageable): Page<CarModel>
 }
 
 @Repository
@@ -36,6 +37,6 @@ data class CarModelJpaRepository(
     }
 
     override fun filterBy(filter: CarModelFilter, pageable: Pageable): Page<CarModel> {
-        return repository.searchModels(filter.model, filter.make, pageable)
+        return repository.searchModels(filter.minYear, filter.maxYear, filter.make, pageable)
     }
 }

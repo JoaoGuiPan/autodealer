@@ -9,6 +9,8 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -58,7 +60,10 @@ data class CarModelController(
         return model
     }
 
-    // TODO
-    fun search() {
+    @ApiOperation(value = "Search Car Model by year range and make")
+    @GetMapping
+    fun search(filter: CarModelFilter, pageable: Pageable): Page<CarModel> {
+        logger.info("Fetching Car Models by $filter")
+        return searchModel.filterBy(filter, pageable)
     }
 }
