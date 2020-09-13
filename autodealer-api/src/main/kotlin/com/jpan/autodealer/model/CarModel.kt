@@ -15,7 +15,6 @@ data class CarModel(
 
         @field:NotNull
         @field:NotBlank
-        @Column(unique = true)
         var name: String? = null,
 
         @ManyToOne
