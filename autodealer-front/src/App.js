@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
   list: {
     width: 250,
   },
+  container: {
+    padding: '2em'
+  }
 }));
 
 function App() {
@@ -79,15 +82,17 @@ function App() {
           {menuList()}
         </Drawer>
         <Switch>
-          <Route path="/car-management">
-            <AppCarManagement />
-          </Route>
-          <Route path="/car-suggestions">
-            <AppCarRanking />
-          </Route>
-          <Route path="/">
-            <AppHome />
-          </Route>
+          <div className={classes.container}>
+            <Route path="/car-management">
+              <AppCarManagement />
+            </Route>
+            <Route path="/car-suggestions">
+              <AppCarRanking />
+            </Route>
+            <Route path="/">
+              <AppHome />
+            </Route>
+          </div>
         </Switch>
       </Router>
     </div>

@@ -15,9 +15,15 @@ export const carModelService = {
         return axios.get(`${environment.url}/carmodels/${id}`);
     },
 
-    search: (minYear, maxYear, brandId) => {
-        return axios.get(`${environment.url}/carmodels`, { params: {
-            minYear, maxYear, brandId
-        } });
+    search: (page, make, minYear, maxYear) => {
+      make = !make || !make.length ? null : make;
+      return axios.get(`${environment.url}/carmodels`, {
+        params: {
+          page, make, minYear, maxYear,
+        },
+        // paramsSerializer: params => {
+        //   return qs.stringify(params)
+        // }
+      });
     }
 }
