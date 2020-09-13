@@ -1,4 +1,5 @@
 import { default as axios } from 'axios';
+import { default as qs } from 'qs';
 
 import { environment } from '../environments/environment';
 
@@ -16,14 +17,13 @@ export const carModelService = {
     },
 
     search: (page, make, minYear, maxYear) => {
-      make = !make || !make.length ? null : make;
       return axios.get(`${environment.url}/carmodels`, {
         params: {
           page, make, minYear, maxYear,
         },
-        // paramsSerializer: params => {
-        //   return qs.stringify(params)
-        // }
+        paramsSerializer: params => {
+          return qs.stringify(params)
+        }
       });
     }
 }
