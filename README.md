@@ -9,7 +9,7 @@ To build the code, simply run `npm install` in 'autodealer-front' folder and the
 
 # Running
 
-To run the app, first run `./mvnw spring-boot:run` in 'autodealer-api' folder and then `ng serve` in 'autodealer-front' folder. The app will be available at `http://localhost:4200/`.
+To run the app, first run `./mvnw spring-boot:run` in 'autodealer-api' folder and then `npm start` in 'autodealer-front' folder. The app will be available at `http://localhost:4200/`.
 
 # Documentation
 
