@@ -3,6 +3,7 @@ import React from 'react';
 import MaterialTable from "material-table";
 
 import { CONSTANTS } from '../common/constants';
+import { getMatTableFilterValue } from '../common/utils';
 import { carModelService } from '../service/CarModelService';
 import { carBrandService } from '../service/CarBrandService';
 
@@ -53,22 +54,18 @@ export default function AppCarManagement() {
     ]
   });
 
-  const getFilterValue = (filters, field) => {
-    const filter = filters.find(f => f.column.field === field);
-    return filter && filter.value
-  };
-
   const fetch = query => new Promise((resolve, reject) => {
 
-    const make = getFilterValue(query.filters, 'brand')
-    const year = getFilterValue(query.filters, 'year')
+    const make = getMatTableFilterValue(query.filters, 'brand')
+    const year = getMatTableFilterValue(query.filters, 'year')
 
-    carModelService.search(query.page, make, year, year)
+    carModelService.search(query.page, query.pageSize, make, year, year)
       .then(result => {
         const { data } = result;
         resolve({
           data: data.content,
           page: data.pageable.pageNumber,
+          pageSize: data.pageable.size,
           totalCount: data.totalElements
         });
       })

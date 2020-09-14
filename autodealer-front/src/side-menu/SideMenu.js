@@ -6,6 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import LanguageIcon from '@material-ui/icons/Language';
 import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import HomeIcon from '@material-ui/icons/Home';
@@ -20,6 +21,13 @@ export default function AppSideMenu() {
         <ListItem button key='Home'>
           <ListItemIcon><HomeIcon /></ListItemIcon>
           <ListItemText primary='Home' />
+        </ListItem>
+      </Link>
+      <Divider />
+      <Link to="/brand-management">
+        <ListItem button key='Car Brands'>
+          <ListItemIcon><LanguageIcon /></ListItemIcon>
+          <ListItemText primary='Car Brands' />
         </ListItem>
       </Link>
       <Divider />

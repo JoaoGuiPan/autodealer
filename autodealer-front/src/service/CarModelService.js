@@ -16,11 +16,12 @@ export const carModelService = {
         return axios.get(`${environment.url}/carmodels/${id}`);
     },
 
-    search: (page, make, minYear, maxYear) => {
+    search: (page, pageSize, make, minYear, maxYear) => {
       return axios.get(`${environment.url}/carmodels`, {
         params: {
-          page, make, minYear, maxYear,
+          page, size: pageSize, make, minYear, maxYear,
         },
+        //necessary due to 'make' param being a list
         paramsSerializer: params => {
           return qs.stringify(params)
         }

@@ -9,5 +9,9 @@ export const carBrandService = {
 
     listAll: () => {
         return axios.get(`${environment.url}/brands`);
+    },
+
+    search: (page, pageSize, name) => {
+        return axios.get(`${environment.url}/brands`, { params: { page, size: pageSize, name } });
     }
 }

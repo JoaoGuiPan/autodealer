@@ -15,9 +15,10 @@ import {
 } from "react-router-dom";
 
 import AppSideMenu from './side-menu/SideMenu';
-import AppHome from './home/Home';
+import AppBrandManagement from './brand-management/BrandManagement';
 import AppCarManagement from './car-management/CarManagement';
 import AppCarRanking from './car-ranking/CarRanking';
+import AppHome from './home/Home';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,13 +84,16 @@ function App() {
         </Drawer>
         <Switch>
           <div className={classes.container}>
-            <Route path="/car-management">
+            <Route exact path="/brand-management">
+              <AppBrandManagement />
+            </Route>
+            <Route exact path="/car-management">
               <AppCarManagement />
             </Route>
-            <Route path="/car-suggestions">
+            <Route exact path="/car-suggestions">
               <AppCarRanking />
             </Route>
-            <Route path="/">
+            <Route exact path="/">
               <AppHome />
             </Route>
           </div>
