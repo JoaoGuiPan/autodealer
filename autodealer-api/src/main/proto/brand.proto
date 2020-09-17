@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_outer_classname = "BrandProto";
+
+package com.jpan.autodealer.grpc;
+
+message Brand {
+  int64 id = 1;
+  string name = 2;
+}
+
+message ListBrandRequest {}
+
+message BrandFilter {
+  string name = 1;
+}
+
+message ListBrandResponse {
+  repeated Brand brands = 1;
+}
+
+message Pageable {
+  int64 pageNumber = 1;
+  int64 size = 2;
+}
+
+message PageBrandResponse {
+  repeated Brand content = 1;
+  Pageable pageable = 2;
+  int64 totalElements = 3;
+}
+
+service BrandService {
+  rpc create (BrandFilter) returns (Brand);
+  rpc list (ListBrandRequest) returns (ListBrandResponse);
+  rpc search (BrandFilter) returns (PageBrandResponse);
+}

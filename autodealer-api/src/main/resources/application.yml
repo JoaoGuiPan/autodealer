@@ -2,6 +2,10 @@
 server:
   port: ${PORT:8080}
 
+grpc:
+  server:
+    port: ${GRPC-PORT:9090}
+
 spring:
   datasource:
     driverClassName: org.h2.Driver
