@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository
 
 interface BrandRepository: PagingAndSortingRepository<Brand, Long> {
 
-    @Query(" select b from Brand b where (:name is null or lower(b.name) like concat ('%',:name,'%') ) ")
+    @Query(" select b from Brand b where (:name is null or lower(b.name) like concat ('%',lower(:name),'%') ) ")
     fun searchBrands(@Param("name") name: String?, pageable: Pageable): Page<Brand>
 }
 
