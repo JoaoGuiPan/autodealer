@@ -16,8 +16,25 @@ data class CarSuggestionsService(
                          periodInYears: Int,
                          fuelPriceInEurPerL: BigDecimal?,
                          pageable: Pageable) : Page<CarModel> {
+
         val listAll = listModels.listAll()
-        // TODO
-        return PageImpl<CarModel>(listAll, pageable, listAll.size.toLong())
+
+        val suggestions = listAll.sortedBy {
+            it.price!!.divide(BigDecimal(periodInYears)).plus(
+                it.annualMaintenanceCost!!.plus(
+                    yearlyFuelCosts(monthlyTravelDistance!!, fuelPriceInEurPerL!!, it)
+                )
+            )
+        }
+
+        return PageImpl<CarModel>(content(suggestions, pageable), pageable, suggestions.size.toLong())
     }
+
+    private fun content(suggestions: List<CarModel>, pageable: Pageable): List<CarModel> {
+        val offset = pageable.pageNumber * pageable.pageSize
+        return suggestions.subList(offset, offset + pageable.pageSize)
+    }
+
+    private fun yearlyFuelCosts(monthlyTravelDistance: BigDecimal, fuelPriceInEurPerL: BigDecimal, it: CarModel) =
+            (monthlyTravelDistance / it.fuelConsumptionKmPerL!!) * fuelPriceInEurPerL * BigDecimal(12)
 }
