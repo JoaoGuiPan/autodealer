@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_outer_classname = "CarModelProto";
+
+package com.jpan.autodealer.grpc;
+
+enum FuelType {
+  DIESEL = 0;
+  PETROL = 1;
+  ELECTRIC = 2;
+  HYDROGEN = 3;
+  HYBRID_DIESEL = 4;
+  HYBRID_PETROL = 5;
+  LPG = 6;
+  CNG = 7;
+  ETHANOL = 8;
+  OTHER = 9;
+}
+
+message CarModelVO {
+  int64 id = 1;
+  string name = 2;
+  int64 brand = 3;
+  string version = 4;
+  int32 year = 5;
+  string price = 6;
+  FuelType fuelType = 7;
+  string fuelConsumptionKmPerL = 8;
+  string annualMaintenanceCost = 9;
+}
+
+message CarModelCreateRequest {
+  string name = 1;
+  int64 brand = 2;
+  string version = 3;
+  int32 year = 4;
+  string price = 5;
+  FuelType fuelType = 6;
+  string fuelConsumptionKmPerL = 7;
+  string annualMaintenanceCost = 8;
+}
+
+message CarModelFetchRequest {
+  int64 id = 1;
+}
+
+message CarModelSearchRequest {
+  int32 minYear = 1;
+  int32 maxYear = 2;
+  repeated int64 make = 3;
+  int32 page = 4;
+  int32 size = 5;
+}
+
+message CarModelSuggestionRequest {
+  string monthlyTravelDistance = 1;
+  int32 periodInYears = 2;
+  string fuelPriceInEurPerL = 3;
+  int32 page = 4;
+  int32 size = 5;
+}
+
+message PageCarModelResponse {
+  repeated CarModelVO content = 1;
+  int32 page = 2;
+  int32 size = 3;
+  int64 totalElements = 4;
+}
+
+service CarModelService {
+  rpc create (CarModelCreateRequest) returns (CarModelVO);
+  rpc update (CarModelVO) returns (CarModelVO);
+  rpc fetch (CarModelFetchRequest) returns (CarModelVO);
+  rpc search (CarModelSearchRequest) returns (PageCarModelResponse);
+  rpc suggest (CarModelSuggestionRequest) returns (PageCarModelResponse);
+}

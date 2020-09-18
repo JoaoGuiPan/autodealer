@@ -1,8 +1,6 @@
 package com.jpan.autodealer.repository
 
-import com.jpan.autodealer.common.CreateRepository
-import com.jpan.autodealer.common.SearchPageRepository
-import com.jpan.autodealer.common.UpdateRepository
+import com.jpan.autodealer.common.*
 import com.jpan.autodealer.model.CarModel
 import com.jpan.autodealer.model.CarModelFilter
 import org.springframework.data.domain.Page
@@ -26,7 +24,8 @@ interface CarModelRepository: PagingAndSortingRepository<CarModel, Long> {
 @Repository
 data class CarModelJpaRepository(
         val repository: CarModelRepository
-): CreateRepository<CarModel>, UpdateRepository<CarModel>, SearchPageRepository<CarModelFilter, CarModel> {
+): CreateRepository<CarModel>, UpdateRepository<CarModel>, ListRepository<CarModel>,
+        SearchPageRepository<CarModelFilter, CarModel>, ByIdRepository<Long, CarModel> {
 
     override fun create(entity: CarModel): CarModel {
         return repository.save(entity)
@@ -36,7 +35,15 @@ data class CarModelJpaRepository(
         return repository.save(entity)
     }
 
+    override fun listAll(): List<CarModel> {
+        return repository.findAll().toList()
+    }
+
     override fun filterBy(filter: CarModelFilter, pageable: Pageable): Page<CarModel> {
         return repository.searchModels(filter.minYear, filter.maxYear, filter.make, pageable)
+    }
+
+    override fun get(id: Long): CarModel? {
+        return repository.findById(id).orElse(null)
     }
 }

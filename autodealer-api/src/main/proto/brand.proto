@@ -5,11 +5,6 @@ option java_outer_classname = "BrandProto";
 
 package com.jpan.autodealer.grpc;
 
-message Brand {
-  int64 id = 1;
-  string name = 2;
-}
-
 message BrandRequest {
   string name = 1;
 }
@@ -18,23 +13,28 @@ message ListBrandRequest {}
 
 message PageBrandRequest {
   string name = 1;
-  int64 page = 2;
-  int64 size = 3;
+  int32 page = 2;
+  int32 size = 3;
+}
+
+message BrandResponse {
+  int64 id = 1;
+  string name = 2;
 }
 
 message ListBrandResponse {
-  repeated Brand brands = 1;
+  repeated BrandResponse brands = 1;
 }
 
 message PageBrandResponse {
-  repeated Brand content = 1;
-  int64 pageNumber = 2;
-  int64 size = 3;
+  repeated BrandResponse content = 1;
+  int32 page = 2;
+  int32 size = 3;
   int64 totalElements = 4;
 }
 
 service BrandService {
-  rpc create (BrandRequest) returns (Brand);
+  rpc create (BrandRequest) returns (BrandResponse);
   rpc list (ListBrandRequest) returns (ListBrandResponse);
   rpc search (PageBrandRequest) returns (PageBrandResponse);
 }
