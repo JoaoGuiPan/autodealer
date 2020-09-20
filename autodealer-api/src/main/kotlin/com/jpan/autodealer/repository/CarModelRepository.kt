@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import java.time.LocalDate
 
 interface CarModelRepository: PagingAndSortingRepository<CarModel, Long> {
     @Query(
@@ -40,7 +41,8 @@ data class CarModelJpaRepository(
     }
 
     override fun filterBy(filter: CarModelFilter, pageable: Pageable): Page<CarModel> {
-        return repository.searchModels(filter.minYear, filter.maxYear, filter.make, pageable)
+        val maxYear = if (filter.maxYear == 0) LocalDate.now().year else filter.maxYear
+        return repository.searchModels(filter.minYear, maxYear, filter.getBrandList(), pageable)
     }
 
     override fun get(id: Long): CarModel? {

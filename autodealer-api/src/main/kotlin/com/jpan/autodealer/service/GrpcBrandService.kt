@@ -30,7 +30,7 @@ data class GrpcBrandService(
     }
 
     override fun search(request: PageBrandRequest?, responseObserver: StreamObserver<PageBrandResponse>?) {
-        val page = searchBrands.filterBy(BrandFilter(name = request!!.name), PageRequest.of(request.page, request.size))
+        val page = searchBrands.filterBy(BrandFilter(name = request!!.name), PageRequest.of(request.page, if (request.size > 0 ) request.size else 1))
         responseObserver!!.onNext(page.fromEntity())
         responseObserver.onCompleted()
     }

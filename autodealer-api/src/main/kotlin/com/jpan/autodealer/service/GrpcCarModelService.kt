@@ -38,7 +38,7 @@ data class GrpcCarModelService(
     }
 
     override fun search(request: CarModelSearchRequest?, responseObserver: StreamObserver<PageCarModelResponse>?) {
-        val page = searchModel.filterBy(request!!.toFilter(), PageRequest.of(request.page, request.size))
+        val page = searchModel.filterBy(request!!.toFilter(), PageRequest.of(request.page, if (request.size > 0 ) request.size else 1))
         responseObserver!!.onNext(page.fromEntity())
         responseObserver.onCompleted()
     }
@@ -48,7 +48,7 @@ data class GrpcCarModelService(
                 request!!.monthlyTravelDistance.toBigDecimalOrNull(),
                 request.periodInYears,
                 request.fuelPriceInEurPerL.toBigDecimalOrNull(),
-                PageRequest.of(request.page, request.size)
+                PageRequest.of(request.page, if (request.size > 0 ) request.size else 1)
         )
         responseObserver!!.onNext(page.fromEntity())
         responseObserver.onCompleted()
