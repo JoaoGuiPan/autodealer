@@ -1,15 +1,15 @@
 
 export const CONSTANTS = {
   fuelTypes: {
-    DIESEL: 'Diesel',
-    PETROL: 'Petrol',
-    HYDROGEN: 'Hydrogen',
-    HYBRID_DIESEL: 'Hybrid/Diesel',
-    HYBRID_PETROL: 'Hybrid/Petrol',
-    LPG: 'LPG',
-    CNG: 'CNG',
-    ELECTRIC: 'Electric',
-    ETHANOL: 'Ethanol',
-    OTHER: 'Other'
+    0: 'Diesel',
+    1: 'Petrol',
+    2: 'Hydrogen',
+    3: 'Hybrid/Diesel',
+    4: 'Hybrid/Petrol',
+    5: 'LPG',
+    6: 'CNG',
+    7: 'Electric',
+    8: 'Ethanol',
+    9: 'Other'
   }
 };

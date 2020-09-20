@@ -13,7 +13,7 @@ export default function AppCarManagement() {
 
   carBrandService.listAll()
     .then(result => {
-      for (const brand of result.data) {
+      for (const brand of result.brandsList) {
         brands[brand.id] = brand.name;
       }
     })
@@ -45,12 +45,12 @@ export default function AppCarManagement() {
       },
       {
         title: 'Fuel Type',
-        field: 'fuelType',
+        field: 'fueltype',
         lookup: CONSTANTS.fuelTypes,
         filtering: false,
       },
-      { title: 'Fuel Consumption (Km/L)', field: 'fuelConsumptionKmPerL', type: 'numeric', filtering: false, },
-      { title: 'Annual Maintenance Cost', field: 'annualMaintenanceCost', type: 'numeric', filtering: false, },
+      { title: 'Fuel Consumption (Km/L)', field: 'fuelconsumptionkmperl', type: 'numeric', filtering: false, },
+      { title: 'Annual Maintenance Cost', field: 'annualmaintenancecost', type: 'numeric', filtering: false, },
     ]
   });
 
@@ -61,12 +61,11 @@ export default function AppCarManagement() {
 
     carModelService.search(query.page, query.pageSize, make, year, year)
       .then(result => {
-        const { data } = result;
         resolve({
-          data: data.content,
-          page: data.pageable.pageNumber,
-          pageSize: data.pageable.size,
-          totalCount: data.totalElements
+          data: result.contentList,
+          page: result.page,
+          pageSize: result.size,
+          totalCount: result.totalelements
         });
       })
       .catch(reject);

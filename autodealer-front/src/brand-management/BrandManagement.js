@@ -10,12 +10,11 @@ export default function AppBrandManagement() {
 
     carBrandService.search(query.page, query.pageSize, (query.search && query.search.toLowerCase()))
       .then(result => {
-        const { data } = result;
         resolve({
-          data: data.content,
-          page: data.pageable.pageNumber,
-          pageSize: data.pageable.size,
-          totalCount: data.totalElements
+          data: result.contentList,
+          page: result.page,
+          pageSize: result.size,
+          totalCount: result.totalelements
         });
       })
       .catch(reject);
