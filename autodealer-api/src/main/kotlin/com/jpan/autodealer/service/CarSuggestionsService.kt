@@ -31,8 +31,9 @@ data class CarSuggestionsService(
     }
 
     private fun content(suggestions: List<CarModel>, pageable: Pageable): List<CarModel> {
-        val offset = pageable.pageNumber * pageable.pageSize
-        return suggestions.subList(offset, offset + pageable.pageSize)
+        val pageSize = if (pageable.pageSize > suggestions.size) suggestions.size else pageable.pageSize
+        val offset = pageable.pageNumber * pageSize
+        return suggestions.subList(offset, offset + pageSize)
     }
 
     private fun yearlyFuelCosts(monthlyTravelDistance: BigDecimal, fuelPriceInEurPerL: BigDecimal, it: CarModel) =
