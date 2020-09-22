@@ -91,7 +91,7 @@ export const carModelService = {
       size,
     ];
     return new Promise((resolve, reject) => {
-      new CarModelServiceClient(environment.url).search(new CarModelSuggestionRequest(data), {}, (err, response) => {
+      new CarModelServiceClient(environment.url).suggest(new CarModelSuggestionRequest(data), {}, (err, response) => {
         if (err) {
           reject(err);
         }

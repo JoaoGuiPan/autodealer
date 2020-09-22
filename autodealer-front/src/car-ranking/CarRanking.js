@@ -11,37 +11,49 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
 
 import { CONSTANTS } from '../common/constants';
 import { carModelService } from '../service/CarModelService';
 import { carBrandService } from '../service/CarBrandService';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+  },
   table: {
     minWidth: 500,
   },
-});
+}));
 
 export default function AppCarRanking() {
 
   const classes = useStyles();
   const [brands, setBrands] = React.useState({})
+  const [filters, setFilters] = React.useState({ monthlytraveldistance: null, periodinyears: null, fuelpriceineurperl: null });
   const [page, setContent] = React.useState({ contentList: [], page: 0, size: 5, totalelements: 1 });
   const [currentPage, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  carBrandService.listAll()
-    .then(result => {
-      for (const brand of result.brandsList) {
-        brands[brand.id] = brand.name;
-      }
-      setBrands(brands);
-    })
-    .catch(err => console.error(err));
+  if (Object.keys(brands).length === 0) {
+    carBrandService.listAll()
+      .then(result => {
+        for (const brand of result.brandsList) {
+          brands[brand.id] = brand.name;
+        }
+        setBrands(brands);
+      })
+      .catch(err => console.error(err));
+  }
 
-  const handleChangePage = (event, newPage) => {
-    carModelService.search(newPage, rowsPerPage)
+  const handleChangePage = (_, newPage) => {
+    carModelService.ranking(newPage, rowsPerPage, filters.monthlytraveldistance, filters.periodinyears, filters.fuelpriceineurperl)
       .then(result => {
         setContent(result);
         setPage(result.page);
@@ -50,13 +62,41 @@ export default function AppCarRanking() {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    carModelService.search(0, parseInt(event.target.value, 10))
-      .then(result => {
-        setContent(result);
-        setRowsPerPage(result.size);
-        setPage(0);
-      })
-      .catch(err => console.error(err));
+    if (filters.monthlytraveldistance && filters.periodinyears && filters.fuelpriceineurperl) {
+      carModelService.ranking(0, parseInt(event.target.value, 10), filters.monthlytraveldistance, filters.periodinyears, filters.fuelpriceineurperl)
+        .then(result => {
+          setContent(result);
+          setRowsPerPage(result.size);
+          setPage(0);
+        })
+        .catch(err => console.error(err));
+    } else {
+      setRowsPerPage(parseInt(event.target.value, 10));
+    }
+  };
+
+  const filter = () => {
+    if (filters.monthlytraveldistance && filters.periodinyears && filters.fuelpriceineurperl) {
+      carModelService.ranking(currentPage, rowsPerPage, filters.monthlytraveldistance, filters.periodinyears, filters.fuelpriceineurperl)
+        .then(result => {
+          setContent(result);
+          setPage(result.page);
+          setRowsPerPage(result.size);
+        })
+        .catch(err => console.error(err));
+    }
+  };
+
+  const handleMonthlyDistance = (event) => {
+    setFilters({ monthlytraveldistance: event.target.value, periodinyears: filters.periodinyears, fuelpriceineurperl: filters.fuelpriceineurperl });
+  };
+
+  const handlePeriod = (event) => {
+    setFilters({ monthlytraveldistance: filters.monthlytraveldistance, periodinyears: parseInt(event.target.value, 10), fuelpriceineurperl: filters.fuelpriceineurperl });
+  };
+
+  const handleFuelPrice = (event) => {
+    setFilters({ monthlytraveldistance: filters.monthlytraveldistance, periodinyears: filters.periodinyears, fuelpriceineurperl: event.target.value });
   };
 
   return (
@@ -64,6 +104,14 @@ export default function AppCarRanking() {
       <Typography gutterBottom variant="h5" component="h2" style={{ textAlign: 'left', paddingLeft: '1em' }}>
         Car Ranking Suggestions
       </Typography>
+      <div>
+        <TextField label="Monthly Traveled Distance" type="number" style={{width: 200, marginRight: '1em' }} onChange={handleMonthlyDistance}/>
+        <TextField label="Period In Years" type="number" style={{ marginRight: '1em' }} onChange={handlePeriod}/>
+        <TextField label="Fuel Price (€)" type="number" onChange={handleFuelPrice}/>
+        <IconButton variant="contained" color="primary" onClick={filter}>
+          <SearchIcon />
+        </IconButton>
+      </div>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="custom pagination table">
           <TableHead>
@@ -72,10 +120,10 @@ export default function AppCarRanking() {
               <TableCell align="right">Make</TableCell>
               <TableCell align="right">Version</TableCell>
               <TableCell align="right">Year</TableCell>
-              <TableCell align="right">Price</TableCell>
+              <TableCell align="right">Price (€)</TableCell>
               <TableCell align="right">Fuel Type</TableCell>
               <TableCell align="right">Fuel Consumption (Km/L)</TableCell>
-              <TableCell align="right">Annual Maintenance Cost</TableCell>
+              <TableCell align="right">Annual Maintenance Cost (€)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -110,7 +158,7 @@ export default function AppCarRanking() {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={4}></TableCell>
+              <TableCell colSpan={4}></TableCell> {/* added to display pagination on the right side, just like the other pages */}
               <TablePagination
                 rowsPerPageOptions={[5, 10, 20]}
                 colSpan={4}

@@ -38,7 +38,7 @@ export default function AppCarManagement() {
         type: 'numeric',
       },
       {
-        title: 'Price',
+        title: 'Price (€)',
         field: 'price',
         type: 'numeric',
         filtering: false,
@@ -50,7 +50,7 @@ export default function AppCarManagement() {
         filtering: false,
       },
       { title: 'Fuel Consumption (Km/L)', field: 'fuelconsumptionkmperl', type: 'numeric', filtering: false, },
-      { title: 'Annual Maintenance Cost', field: 'annualmaintenancecost', type: 'numeric', filtering: false, },
+      { title: 'Annual Maintenance Cost (€)', field: 'annualmaintenancecost', type: 'numeric', filtering: false, },
     ]
   });
 
