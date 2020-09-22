@@ -4,7 +4,7 @@ Autodealer Web App and API
 
 # Building
 
-First, you will need to have Docker, node.js and Java 8 installed on your machine.
+First, you will need to have Docker, node.js and Java 8 (make sure it is jdk 1.8, otherwise it will not work due to the grpc/spring api requirements) installed on your machine.
 To build the code, simply run `./mvnw clean install` in 'autodealer-api' folder and then `npm install` in 'autodealer-front' folder.
 
 # Running
